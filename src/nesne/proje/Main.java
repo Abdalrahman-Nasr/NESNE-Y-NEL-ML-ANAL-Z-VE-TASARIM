@@ -2,11 +2,15 @@ package nesne.proje;
 
 import nesne.proje.pojo.User;
 
+import java.io.BufferedReader;
+import java.io.Console;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         IAuthenticator authenticator = new Authenticator(new DAO());
         Scanner sc = new Scanner(System.in);
         User user = null;
@@ -18,7 +22,7 @@ public class Main {
             System.out.print("Kullanici adi: ");
             username = sc.nextLine();
             System.out.print("sifre: ");
-            password = sc.nextLine();
+            password = readPassword(sc);
             if (authenticator.isRegistered(username, password)) {
                 user = new User(username, password);
             } else {
@@ -35,19 +39,39 @@ public class Main {
             System.out.print("lutfen seciniz: ");
             String cmd = sc.nextLine();
             switch (cmd) {
-                case "S", "s" -> System.out.println("Sicaklik: " + arayuz.sicaklikGonder());
-                case "A", "a" -> arayuz.sougtucuAc();
-                case "K", "k" -> arayuz.sougtucuKapat();
-                case "e", "E" -> System.exit(0);
+                case "S":
+                case "s":
+                    System.out.println("Sicaklik: " + arayuz.sicaklikGonder());
+                    break;
+                case "A":
+                case "a":
+                    arayuz.sougtucuAc();
+                    break;
+                case "K":
+                case "k":
+                    arayuz.sougtucuKapat();
+                    break;
+                case "e":
+                case "E":
+                    System.exit(0);
+                    break;
             }
         }
     }
 
+    private static String readPassword(Scanner sc) {
+        if (System.console() != null) {
+            return new String(System.console().readPassword());
+        }else {
+            return sc.nextLine();
+        }
+    }
+
     private static void clearScreen() {
-        try{
+        try {
             String operatingSystem = System.getProperty("os.name"); //Check the current operating system
 
-            if(operatingSystem.contains("Windows")){
+            if (operatingSystem.contains("Windows")) {
                 ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "cls");
                 Process startProcess = pb.inheritIO().start();
                 startProcess.waitFor();
@@ -57,7 +81,7 @@ public class Main {
 
                 startProcess.waitFor();
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

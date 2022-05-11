@@ -123,7 +123,7 @@ public class SmartDevice implements ISmartDevice{
         }
     }
 
-    public static enum State {
+    public  enum State {
         KAPALI,
         ACIK,
         BEKLIYOR,
